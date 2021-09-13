@@ -17,10 +17,14 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "@types/react-redux": "^7.1.7",
+    "long": "^4.0.0",
+    "postcss": "^8.3.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.0",
+    "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
+    "react-toast-notifications": "^2.5.1",
     "rxjs": "^7.3.0",
     "symbol-sdk": "^1.0.1",
     "tailwindcss": "^2.2.15",
@@ -28,6 +32,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "prebuild:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.compiled.css",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -46,5 +51,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/long": "^4.0.1",
+    "@types/react-router-dom": "^5.1.8"
   }
 }
