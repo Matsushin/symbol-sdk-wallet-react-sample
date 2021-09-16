@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Layout>
           <Switch>
-            <Route exact path="/account/:address" component={AccountPage} />
+            <Route exact path="/address/:address" component={AccountPage} />
             <Route path="/" component={TopPage} />
           </Switch>
         </Layout>
