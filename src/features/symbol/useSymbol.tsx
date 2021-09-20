@@ -1,4 +1,13 @@
-import {Account, Address, NetworkType, RepositoryFactoryHttp} from "symbol-sdk";
+import {
+  Account,
+  Address,
+  Deadline,
+  Mosaic,
+  NetworkType, PlainMessage,
+  RepositoryFactoryHttp, SignedTransaction, Transaction,
+  TransferTransaction,
+  UInt64
+} from "symbol-sdk";
 import Long from "long";
 import assert from "assert";
 import {useMemo, useState} from "react";
@@ -71,8 +80,61 @@ export const useSymbol = (address?: string) => {
     return account
   }
 
+  const createTransferTx = async (recipientAddr: string, amount: Long, message: string) => {
+    const { networkType, epochAdjustment, networkCurrencyMosaicId, transactionFees } = await getNetwork();
+
+    return TransferTransaction.create(
+      // トランザクションの有効期限。期限までにブロックチェーンで承認されなければ破棄される（＝失敗する）。
+      // ここでは何も時間を指定してないので、デフォルトの2時間。
+      Deadline.create(epochAdjustment),
+      // 受取人のアドレス
+      Address.createFromRawAddress(recipientAddr),
+      // 送金するモザイクと金額（ここではネイティブ通貨の XYM を送ります）
+      [new Mosaic(networkCurrencyMosaicId, UInt64.fromNumericString(amount.toString()))],
+      // トランザクションに好きなメッセージを添付できます。
+      PlainMessage.create(message),
+      // Mainnet なのか Testnet なのか
+      networkType)
+      // 手数料率の「最大値」を設定。ここではノードから提示される平均的な処理速度の手数料率を使用する。
+      // 手数料は `手数料率ｘトランザクションサイズ` で決まりますが、トランザクションを実行するまで厳密には決まりません。
+      // ここで設定するのは支払いを許容する最大の手数料で、最終的に支払う手数料は必ずこれ以下になります。
+      .setMaxFee(transactionFees.averageFeeMultiplier);
+  }
+
+  const getAccount = async (signerPrivateKey: string) => {
+    const { networkType } = await getNetwork();
+    return Account.createFromPrivateKey(signerPrivateKey, networkType);
+  }
+
+  const signTx = async (tx: Transaction, signer: Account) => {
+    const { networkGenerationHash } = await getNetwork();
+
+    // networkGenerationHash を指定する事で、そのネットワークでのみ通用するトランザクションになります。
+    // つまり間違ったネットワークでアナウンスしておかしなことにならない様にできます。
+    return signer.sign(tx, networkGenerationHash);
+  }
+
+  const sendXym = async (recipient: string, amount: Long, message: string, privateKey: string) => {
+    const tx = await createTransferTx(recipient, amount, message);
+    const signer = await getAccount(privateKey);
+    const signedTx = await signTx(tx, signer);
+    await announceTx(signedTx);
+  }
+
+  const announceTx = async (signedTx: SignedTransaction) => {
+    const { repositoryFactory } = await getNetwork();
+
+    // アナウンスしたら直ぐに Promise が解決されます。トランザクションの承認までは待ちません。
+    return repositoryFactory
+      .createTransactionRepository()
+      .announce(signedTx)
+      .toPromise();
+  }
+
   return {
     createAccount,
-    balance
+    getAccountBalance,
+    balance,
+    sendXym
   }
 }
