@@ -4,7 +4,7 @@ import {
   Deadline,
   Mosaic,
   NetworkType, PlainMessage,
-  RepositoryFactoryHttp, SignedTransaction, Transaction,
+  RepositoryFactoryHttp, SignedTransaction, Transaction, TransactionGroup,
   TransferTransaction,
   UInt64
 } from "symbol-sdk";
@@ -62,21 +62,9 @@ const getAccountBalance = async (address: string) => {
     });
 }
 
-export const useSymbol = (address?: string) => {
-  const [balance, setBalance] = useState(Long.ZERO);
-
-  useMemo(() => {
-    if (!address) return
-    getAccountBalance(address)
-      .then((balance) => {
-        setBalance(balance);
-      })
-      .catch(console.error);
-  }, [address])
-
+export const useSymbol = () => {
   const createAccount = () => {
     const account = Account.generateNewAccount(NetworkType.TEST_NET)
-    console.log(account)
     return account
   }
 
@@ -119,6 +107,7 @@ export const useSymbol = (address?: string) => {
     const signer = await getAccount(privateKey);
     const signedTx = await signTx(tx, signer);
     await announceTx(signedTx);
+    return { signer, signedTx }
   }
 
   const announceTx = async (signedTx: SignedTransaction) => {
@@ -131,10 +120,49 @@ export const useSymbol = (address?: string) => {
       .toPromise();
   }
 
+  const waitForConfirmTx = async (signer: Account, signedTx: SignedTransaction) => {
+    const { repositoryFactory } = await getNetwork();
+    const listener = repositoryFactory.createListener();
+
+    return listener.open().then(() => {
+      return new Promise((resolve, reject) => {
+        // 一定時間通信がないとタイムアウトするので、定期発生するブロック生成イベントを受信しておく。
+        // それが必要なければ削除。
+        listener.newBlock();
+        // 指定のトランザクションが承認されるのを待ちます。
+        listener.confirmed(signer.address, signedTx.hash)
+          .subscribe((tx) => {
+              resolve(tx);
+            },
+            (e) => {
+              console.error(e);
+              reject(e);
+            });
+
+        // リッスンする以前に承認済みだった場合をケア
+        const tx = getConfirmedTx(signedTx.hash);
+        if (tx) {
+          return resolve(tx);
+        }
+      }).finally(() => {
+        listener.close();
+      });
+    });
+  }
+
+  const getConfirmedTx = async (txHash: string) => {
+    const { repositoryFactory } = await getNetwork();
+
+    return repositoryFactory.createTransactionRepository()
+      .getTransaction(txHash, TransactionGroup.Confirmed)
+      .toPromise()
+      .catch((e) => undefined);
+  }
+
   return {
     createAccount,
     getAccountBalance,
-    balance,
-    sendXym
+    sendXym,
+    waitForConfirmTx
   }
 }

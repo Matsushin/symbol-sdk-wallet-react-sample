@@ -1,8 +1,7 @@
 import {useSymbol} from "../features/symbol/useSymbol";
 import {useParams} from "react-router-dom";
-import {useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useToasts} from "react-toast-notifications";
-import {from} from "rxjs/dist/types";
 import Long from "long";
 
 // Micro XYM → XYM へ変換
@@ -25,7 +24,8 @@ const fromXYM = (xym: string) => {
 
 const AccountPage: React.FC = () => {
   const { address } = useParams<{address: string}>()
-  const { balance, sendXym, getAccountBalance } = useSymbol(address)
+  const { sendXym, getAccountBalance, waitForConfirmTx } = useSymbol()
+  const [balance, setBalance] = useState(Long.ZERO)
   const { addToast } = useToasts()
   const [submitting, setSubmitting] = useState(false);
   const [recipient, setRecipient] = useState("");
@@ -42,26 +42,34 @@ const AccountPage: React.FC = () => {
     setSubmitting(true);
     event.preventDefault();
     try {
-      await sendXym(recipient, fromXYM(amount), message, privateKey)
+      const { signer, signedTx } = await sendXym(recipient, fromXYM(amount), message, privateKey)
 
       addToast('トランザクションをアナウンスしました！完了までお待ちください。',
         {appearance: 'info', autoDismiss: true});
 
-      //await waitForConfirmTx(signer, signedTx);
+      await waitForConfirmTx(signer, signedTx);
 
-      // addToast('送金完了しました！',
-      //   {appearance: 'success', autoDismiss: true});
-      // reset();
-      // updateBalance();
-      // updateTxs();
-      setSubmitting(false);
-      //getAccountBalance(address)
+      addToast('送金完了しました！',
+        {appearance: 'success', autoDismiss: true});
+      updateBalance();
     } catch (e) {
       console.error(e);
-      addToast('エラーが発生しました。', {appearance: 'error', autoDismiss: true});
+      addToast(`エラーが発生しました。${e.message}`, {appearance: 'error', autoDismiss: true});
     }
-
+    setSubmitting(false);
   }
+
+  const updateBalance = useCallback(() => {
+    getAccountBalance(address)
+      .then((b) => {
+        setBalance(b);
+      })
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    updateBalance();
+  }, [updateBalance]);
 
   return (
     <div>
