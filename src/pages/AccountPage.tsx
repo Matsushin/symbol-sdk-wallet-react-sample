@@ -1,6 +1,6 @@
 import {useSymbol} from "../features/symbol/useSymbol";
 import {useParams} from "react-router-dom";
-import {useCallback, useEffect, useState} from "react";
+import {ChangeEvent, useCallback, useEffect, useState} from "react";
 import {useToasts} from "react-toast-notifications";
 import Long from "long";
 
@@ -35,7 +35,7 @@ const AccountPage: React.FC = () => {
 
   const handleRecipientChange = (event: React.ChangeEvent<HTMLInputElement>) => setRecipient(event.target.value);
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => setAamount(event.target.value);
-  const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => setMessage(event.target.value);
+  const handleMessageChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => setMessage(event.target.value);
   const handlePrivateKeyChange = (event: React.ChangeEvent<HTMLInputElement>) => setPrivateKey(event.target.value);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -77,9 +77,9 @@ const AccountPage: React.FC = () => {
         <p><span className="text-gray-600">アドレス： </span>{address}</p>
         <p><span className="text-gray-600">XYM残高： </span>{toXYM(balance)}</p>
       </div>
-      <div className="bg-gray-100 h-screen">
+      <div className="bg-gray-100 h-full">
         <div className="p-4">
-          <div className="p-8 bg-white shadow-sm">
+          <div className="p-8 bg-white shadow-sm w-3/5">
             <h1 className="font-bold">送金</h1>
             <form onSubmit={onSubmit} className="mt-8 space-y-3" action="#" method="GET">
               <div className="mt-2 mb-1">
@@ -89,7 +89,7 @@ const AccountPage: React.FC = () => {
                      required
                      value={recipient}
                      onChange={handleRecipientChange}
-                     className="appearance-none relative block w-full px-3 py-2 border border-gray-100 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"
+                     className="appearance-none relative block w-3/5 px-3 py-2 border border-gray-100 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"
               />
               <div className="mt-2 mb-1">
                 <label htmlFor="amount" className="text-xs text-gray-700">金額</label>
@@ -98,15 +98,16 @@ const AccountPage: React.FC = () => {
                      required
                      value={amount}
                      onChange={handleAmountChange}
-                     className="appearance-none relative block px-3 py-2 border border-gray-100 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"
+                     className="appearance-none w-1/5 relative block px-3 py-2 border border-gray-100 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"
               />
               <div className="mt-2 mb-1">
                 <label htmlFor="recipient" className="text-xs text-gray-700">メッセージ</label>
               </div>
-              <input id="message" name="message" type="text"
+              <textarea id="message" name="message"
                      value={message}
                      onChange={handleMessageChange}
-                     className="appearance-none relative block w-full px-3 py-2 border border-gray-100 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"
+                     rows={4}
+                     className="appearance-none relative block w-4/5 px-3 py-2 border border-gray-100 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"
               />
               <div className="mt-2 mb-1">
                 <label htmlFor="privateKey" className="text-xs text-gray-700">プライベートキー</label>
@@ -115,11 +116,11 @@ const AccountPage: React.FC = () => {
                      required
                      value={privateKey}
                      onChange={handlePrivateKeyChange}
-                     className="appearance-none relative block w-full px-3 py-2 border border-gray-100 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"
+                     className="appearance-none relative block w-4/5 px-3 py-2 border border-gray-100 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"
               />
               <button
                 type="submit"
-                className="my-auto px-4 bg-transparent p-3 rounded-lg bg-yellow-500 text-black hover:bg-yellow-400 focus:outline-none"
+                className="text-sm px-8 py-2 bg-transparent rounded-lg bg-yellow-500 text-black hover:bg-yellow-400 focus:outline-none"
                 disabled={submitting}
               >
                 送金
