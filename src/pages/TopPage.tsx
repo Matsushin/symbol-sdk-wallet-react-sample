@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 const TopPage: React.FC = () => {
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [errorText, setErrorText] = useState("")
   const { createAccount } = useSymbol()
   const { addToast } = useToasts()
   const history = useHistory();
@@ -14,8 +15,13 @@ const TopPage: React.FC = () => {
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     setSubmitting(true);
     event.preventDefault();
+    const regex = /^T[a-zA-Z0-9]{38}$/
+    if (!regex.test(address)) {
+      setErrorText('アドレスが正しい形式ではありません')
+    } else {
+      history.push(`/address/${address}`);
+    }
     setSubmitting(false);
-    history.push(`/address/${address}`);
   }
 
   const onClickCreateAccount = () => {
@@ -35,12 +41,15 @@ const TopPage: React.FC = () => {
         <div className="mb-1">
           <label htmlFor="address" className="text-xs text-gray-700">アドレス</label>
         </div>
-        <input id="address" name="address" type="text"
-               required
-               value={address}
-               onChange={handleAddressChange}
-               className="appearance-none relative block w-1/3 px-3 py-2 border border-gray-100 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 focus:z-10 sm:text-sm"
-        />
+        <div>
+          <input id="address" name="address" type="text"
+                 required
+                 value={address}
+                 onChange={handleAddressChange}
+                 className={`appearance-none relative block w-1/3 px-3 py-2 border ${ errorText ? 'border-red-700' : 'border-gray-100 focus:ring-yellow-500 focus:border-yellow-500' } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:z-10 sm:text-sm`}
+          />
+          <div className="mt-1 text-xs text-red-700">{errorText}</div>
+        </div>
         <button
           type="submit"
           className="my-auto text-sm px-8 py-2 px-4 bg-transparent rounded-lg bg-yellow-500 text-black hover:bg-yellow-400 focus:outline-none"
