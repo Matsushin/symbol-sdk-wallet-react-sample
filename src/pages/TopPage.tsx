@@ -23,7 +23,7 @@ const TopPage: React.FC = () => {
     event.preventDefault();
     const regex = /^T[a-zA-Z0-9]{38}$/
     if (!regex.test(address)) {
-      setErrorText('アドレスが正しい形式ではありません')
+      setErrorText('形式が正しくありません')
     } else {
       history.push(`/address/${address}`);
     }
@@ -60,7 +60,7 @@ const TopPage: React.FC = () => {
       <h1 className="font-bold">アドレス入力</h1>
       <form onSubmit={onSubmit} className="mt-8 space-y-3" action="#" method="GET">
         <div className="mb-1">
-          <label htmlFor="address" className="text-xs text-gray-700">アドレス</label>
+          <label htmlFor="address" className={`text-xs ${ errorText ? 'text-red-700' : 'text-gray-700' }`}>アドレス</label>
         </div>
         <div>
           <input id="address" name="address" type="text"
