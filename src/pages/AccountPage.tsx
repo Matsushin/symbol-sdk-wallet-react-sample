@@ -1,6 +1,6 @@
 import {useSymbol} from "../features/symbol/useSymbol";
 import {useParams} from "react-router-dom";
-import {ChangeEvent, useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useToasts} from "react-toast-notifications";
 import Long from "long";
 
@@ -53,12 +53,12 @@ const AccountPage: React.FC = () => {
     try {
       const { signer, signedTx } = await sendXym(recipient, fromXYM(amount), message, privateKey)
 
-      addToast('トランザクションをアナウンスしました！完了までお待ちください。',
+      addToast('トランザクションをアナウンスしました。完了までお待ちください',
         {appearance: 'info', autoDismiss: true});
 
       await waitForConfirmTx(signer, signedTx);
 
-      addToast('送金完了しました！',
+      addToast('送金完了しました。着金までしばらくお待ちください',
         {appearance: 'success', autoDismiss: true});
       updateBalance();
     } catch (e) {

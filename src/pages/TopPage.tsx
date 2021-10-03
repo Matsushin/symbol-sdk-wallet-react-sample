@@ -5,6 +5,16 @@ import {useToasts} from "react-toast-notifications";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import copy from 'clipboard-copy'
+import Long from "long";
+
+// XYM → Micro XYM へ変換
+const fromXYM = (xym: string) => {
+  const [integer, decimal] = xym.split('.');
+
+  return Long.fromString(integer).mul(1000000).add(
+    Long.fromString(decimal ? (decimal + '000000').slice(0, 6) : '0')
+  );
+}
 
 const TopPage: React.FC = () => {
   const [address, setAddress] = useState("");
@@ -13,7 +23,7 @@ const TopPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [errorText, setErrorText] = useState("")
   const [showModal, setShowModal] = useState(false)
-  const { createAccount } = useSymbol()
+  const { createAccount, sendXym, waitForConfirmTx } = useSymbol()
   const history = useHistory();
   const { addToast } = useToasts()
 
@@ -34,14 +44,33 @@ const TopPage: React.FC = () => {
     setShowModal(false)
   }
 
-  const onClickCreateAccount = () => {
-    if (window.confirm('本当にアカウントを作成しますか？')) {
+  const onClickCreateAccount = async () => {
+    if (window.confirm('本当にアカウントを作成しますか？アカウント作成時に送金テスト用に10XYM送金されます。')) {
       const account = createAccount()
-      setNewAddress(account.address.plain())
+      const createdAddress = account.address.plain()
+      setNewAddress(createdAddress)
       setNewPrivateKey(account.privateKey)
       setShowModal(true)
 
-      // TODO: このタイミングで100XYM付与したい
+      try {
+        const { signer, signedTx } = await sendXym(
+          createdAddress,
+          fromXYM('10'),
+          '',
+          '42FD6538F6DF9B876425BEFB3DF0E0FD8E2D9E8FA4FC87773D6FA603AA803C9E' // テストXYM送金用アカウント秘密鍵
+        )
+
+        addToast('トランザクションをアナウンスしました。完了までお待ちください',
+          {appearance: 'info', autoDismiss: true});
+
+        await waitForConfirmTx(signer, signedTx);
+
+        addToast('送金完了しました。着金までしばらくお待ちください',
+          {appearance: 'success', autoDismiss: true});
+      } catch (e) {
+        console.error(e);
+        addToast(`エラーが発生しました。${e.message}`, {appearance: 'error', autoDismiss: true});
+      }
     }
   }
 

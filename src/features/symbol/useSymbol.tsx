@@ -10,7 +10,6 @@ import {
 } from "symbol-sdk";
 import Long from "long";
 import assert from "assert";
-import {useMemo, useState} from "react";
 
 const getNetwork = async () => {
   assert(process.env.REACT_APP_NODE_URL);
