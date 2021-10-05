@@ -5,14 +5,19 @@ import TopPage from "./pages/TopPage";
 import {Layout} from "./app/Layout";
 import AccountPage from "./pages/AccountPage";
 
+export const Path = {
+  top: '/',
+  address: `/address/:address`
+}
+
 function App() {
   return (
     <ToastProvider>
       <BrowserRouter>
         <Layout>
           <Switch>
-            <Route exact path="/address/:address" component={AccountPage} />
-            <Route path="/" component={TopPage} />
+            <Route exact path={Path.address} component={AccountPage} />
+            <Route path={Path.top} component={TopPage} />
           </Switch>
         </Layout>
       </BrowserRouter>
