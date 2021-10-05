@@ -58,7 +58,7 @@ const AccountPage: React.FC = () => {
 
       await waitForConfirmTx(signer, signedTx);
 
-      addToast('送金完了しました。着金までしばらくお待ちください',
+      addToast('送金完了しました',
         {appearance: 'success', autoDismiss: true});
       updateBalance();
     } catch (e) {
