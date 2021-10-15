@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import copy from 'clipboard-copy'
 import Long from "long";
+import assert from "assert";
 
 // XYM → Micro XYM へ変換
 const fromXYM = (xym: string) => {
@@ -51,13 +52,15 @@ const TopPage: React.FC = () => {
       setNewAddress(createdAddress)
       setNewPrivateKey(account.privateKey)
       setShowModal(true)
+      assert(process.env.REACT_APP_TEST_PRIVATE_KEY);
+      const testPrivateKey = process.env.REACT_APP_TEST_PRIVATE_KEY
 
       try {
         const { signer, signedTx } = await sendXym(
           createdAddress,
           fromXYM('10'),
           '',
-          '42FD6538F6DF9B876425BEFB3DF0E0FD8E2D9E8FA4FC87773D6FA603AA803C9E' // テストXYM送金用アカウント秘密鍵
+          testPrivateKey // テストXYM送金用アカウント秘密鍵
         )
 
         addToast('トランザクションをアナウンスしました。完了までお待ちください',

@@ -36,10 +36,10 @@
   "scripts": {
     "start": "react-scripts start",
     "prebuild:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.compiled.css",
-    "build": "cross-env PUBLIC_URL=/symbol-sdk-wallet-react-sample react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "cross-env PUBLIC_URL=/symbol-sdk-wallet-react-sample react-scripts build && gh-pages -d build"
+    "deploy": "react-scripts build && gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
