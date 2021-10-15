@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/symbol-sdk-wallet-react-sample/static/css/main.afd7917e.chunk.css",
-    "main.js": "/symbol-sdk-wallet-react-sample/static/js/main.0a30bcb7.chunk.js",
-    "main.js.map": "/symbol-sdk-wallet-react-sample/static/js/main.0a30bcb7.chunk.js.map",
+    "main.js": "/symbol-sdk-wallet-react-sample/static/js/main.b90803db.chunk.js",
+    "main.js.map": "/symbol-sdk-wallet-react-sample/static/js/main.b90803db.chunk.js.map",
     "runtime-main.js": "/symbol-sdk-wallet-react-sample/static/js/runtime-main.41d33b2d.js",
     "runtime-main.js.map": "/symbol-sdk-wallet-react-sample/static/js/runtime-main.41d33b2d.js.map",
     "static/js/2.6c252b4c.chunk.js": "/symbol-sdk-wallet-react-sample/static/js/2.6c252b4c.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.41d33b2d.js",
     "static/js/2.6c252b4c.chunk.js",
     "static/css/main.afd7917e.chunk.css",
-    "static/js/main.0a30bcb7.chunk.js"
+    "static/js/main.b90803db.chunk.js"
   ]
 }
