@@ -10,10 +10,13 @@ export const Path = {
   address: `/address/:address`
 }
 
+const ROUTER_BASENAME =
+  process.env.NODE_ENV === 'development' ? '/' : '/symbol-sdk-wallet-react-sample';
+
 function App() {
   return (
     <ToastProvider>
-      <BrowserRouter>
+      <BrowserRouter basename={ROUTER_BASENAME}>
         <Layout>
           <Switch>
             <Route exact path={Path.address} component={AccountPage} />

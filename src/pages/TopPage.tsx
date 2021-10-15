@@ -36,7 +36,7 @@ const TopPage: React.FC = () => {
     if (!regex.test(address)) {
       setErrorText('形式が正しくありません')
     } else {
-      history.push(`address/${address}`);
+      history.push(`/address/${address}`);
     }
     setSubmitting(false);
   }
