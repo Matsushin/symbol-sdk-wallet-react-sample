@@ -4,27 +4,9 @@ import {useCallback, useEffect, useState} from "react";
 import {useToasts} from "react-toast-notifications";
 import Long from "long";
 
-// Micro XYM → XYM へ変換
-const toXYM = (microXYM: Long) => {
-  const decimal = ('000000' + microXYM.mod(1000000).toString()).slice(-6)
-    .replace(/0+$/g, '');
-  const integer = microXYM.div(1000000).toString();
-
-  return `${integer}${decimal && '.' + decimal}`;
-}
-
-// XYM → Micro XYM へ変換
-const fromXYM = (xym: string) => {
-  const [integer, decimal] = xym.split('.');
-
-  return Long.fromString(integer).mul(1000000).add(
-    Long.fromString(decimal ? (decimal + '000000').slice(0, 6) : '0')
-  );
-}
-
 const AccountPage: React.FC = () => {
   const { address } = useParams<{address: string}>()
-  const { sendXym, getAccountBalance, waitForConfirmTx } = useSymbol()
+  const { sendXym, getAccountBalance, waitForConfirmTx, fromXYM, toXYM } = useSymbol()
   const [balance, setBalance] = useState(Long.ZERO)
   const { addToast } = useToasts()
   const [submitting, setSubmitting] = useState(false);
@@ -117,6 +99,7 @@ const AccountPage: React.FC = () => {
                        required
                        value={recipient}
                        onChange={handleRecipientChange}
+                       placeholder="送金したい相手のアドレスを入力してください"
                        className={`appearance-none relative block w-3/5 px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none ${ errorRecipientText ? 'border-red-700' : 'border-gray-100 focus:ring-yellow-500 focus:border-yellow-500' } focus:z-10 sm:text-sm`}
                 />
                 <div className="mt-1 text-xs text-red-700">{errorRecipientText}</div>
@@ -150,6 +133,7 @@ const AccountPage: React.FC = () => {
                        required
                        value={privateKey}
                        onChange={handlePrivateKeyChange}
+                       placeholder="自身のアカウントの秘密鍵を入力してください"
                        className={`appearance-none relative block w-4/5 px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none ${ errorPrivateKeyText ? 'border-red-700' : 'border-gray-100 focus:ring-yellow-500 focus:border-yellow-500' } focus:z-10 sm:text-sm`}
                 />
                 <div className="mt-1 text-xs text-red-700">{errorPrivateKeyText}</div>

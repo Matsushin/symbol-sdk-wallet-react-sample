@@ -5,17 +5,7 @@ import {useToasts} from "react-toast-notifications";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCopy } from "@fortawesome/free-regular-svg-icons";
 import copy from 'clipboard-copy'
-import Long from "long";
 import assert from "assert";
-
-// XYM → Micro XYM へ変換
-const fromXYM = (xym: string) => {
-  const [integer, decimal] = xym.split('.');
-
-  return Long.fromString(integer).mul(1000000).add(
-    Long.fromString(decimal ? (decimal + '000000').slice(0, 6) : '0')
-  );
-}
 
 const TopPage: React.FC = () => {
   const [address, setAddress] = useState("");
@@ -24,7 +14,7 @@ const TopPage: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [errorText, setErrorText] = useState("")
   const [showModal, setShowModal] = useState(false)
-  const { createAccount, sendXym, waitForConfirmTx } = useSymbol()
+  const { createAccount, sendXym, waitForConfirmTx, fromXYM } = useSymbol()
   const history = useHistory();
   const { addToast } = useToasts()
 
