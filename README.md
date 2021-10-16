@@ -1,6 +1,9 @@
 ## 概要
 - 仮想通貨Symbol(XYM)の送金ができるサンプルアプリ
 
+## サンプルアプリURL
+- https://matsushin.github.io/symbol-sdk-wallet-react-sample/
+
 ### 機能
 - アカウントの作成
 - Symbol(XYM)の残高確認
