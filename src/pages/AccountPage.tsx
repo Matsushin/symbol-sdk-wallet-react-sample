@@ -86,7 +86,7 @@ const AccountPage: React.FC = () => {
         <p><span className="text-gray-600">アドレス： </span>{address}</p>
         <p><span className="text-gray-600">XYM残高： </span>{toXYM(balance)}</p>
       </div>
-      <div className="bg-gray-100 h-full">
+      <div className="bg-gray-100 h-screen">
         <div className="p-4">
           <div className="p-8 bg-white shadow-sm w-3/5">
             <h1 className="font-bold">送金</h1>
