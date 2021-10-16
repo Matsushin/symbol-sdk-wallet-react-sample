@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/symbol-sdk-wallet-react-sample/static/css/main.afd7917e.chunk.css",
-    "main.js": "/symbol-sdk-wallet-react-sample/static/js/main.241985fc.chunk.js",
-    "main.js.map": "/symbol-sdk-wallet-react-sample/static/js/main.241985fc.chunk.js.map",
+    "main.js": "/symbol-sdk-wallet-react-sample/static/js/main.ca93993b.chunk.js",
+    "main.js.map": "/symbol-sdk-wallet-react-sample/static/js/main.ca93993b.chunk.js.map",
     "runtime-main.js": "/symbol-sdk-wallet-react-sample/static/js/runtime-main.41d33b2d.js",
     "runtime-main.js.map": "/symbol-sdk-wallet-react-sample/static/js/runtime-main.41d33b2d.js.map",
-    "static/js/2.1bc48f46.chunk.js": "/symbol-sdk-wallet-react-sample/static/js/2.1bc48f46.chunk.js",
-    "static/js/2.1bc48f46.chunk.js.map": "/symbol-sdk-wallet-react-sample/static/js/2.1bc48f46.chunk.js.map",
+    "static/js/2.d58349ce.chunk.js": "/symbol-sdk-wallet-react-sample/static/js/2.d58349ce.chunk.js",
+    "static/js/2.d58349ce.chunk.js.map": "/symbol-sdk-wallet-react-sample/static/js/2.d58349ce.chunk.js.map",
     "index.html": "/symbol-sdk-wallet-react-sample/index.html",
     "static/css/main.afd7917e.chunk.css.map": "/symbol-sdk-wallet-react-sample/static/css/main.afd7917e.chunk.css.map",
-    "static/js/2.1bc48f46.chunk.js.LICENSE.txt": "/symbol-sdk-wallet-react-sample/static/js/2.1bc48f46.chunk.js.LICENSE.txt"
+    "static/js/2.d58349ce.chunk.js.LICENSE.txt": "/symbol-sdk-wallet-react-sample/static/js/2.d58349ce.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.41d33b2d.js",
-    "static/js/2.1bc48f46.chunk.js",
+    "static/js/2.d58349ce.chunk.js",
     "static/css/main.afd7917e.chunk.css",
-    "static/js/main.241985fc.chunk.js"
+    "static/js/main.ca93993b.chunk.js"
   ]
 }
