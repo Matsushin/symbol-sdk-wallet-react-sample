@@ -4,6 +4,9 @@
 ## サンプルアプリURL
 - https://matsushin.github.io/symbol-sdk-wallet-react-sample/
 
+## テストネットでのXYM受け取りURL
+- http://faucet.testnet.symboldev.network/
+  - 例えばサンプルアプリ内でアカウントを発行して上記URLからテスト用のXYMを受け取ることができます
 ### 機能
 - アカウントの作成
 - Symbol(XYM)の残高確認
