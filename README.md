@@ -5,7 +5,7 @@
 - https://matsushin.github.io/symbol-sdk-wallet-react-sample/
 
 ## テストネットでのXYM受け取りURL
-- http://faucet.testnet.symboldev.network/
+- https://testnet.symbol.tools/
   - 例えばサンプルアプリ内でアカウントを発行して上記URLからテスト用のXYMを受け取ることができます
 
 ### 機能
@@ -44,5 +44,5 @@ Ctrl+C
 
 ## その他
 ### テストユーザ
-- アドレス TAIB4ZQU45R6DS2YINXCWOMFS4BRZL72DOKI4WI
-- 秘密鍵 F8976A41AE9CDBAD2201A4F4ED0BF0F391FA25F0B5C52D069F724BDF02F0CF2A
+- アドレス TDOGDZJU3V6RPG4U5QIQJ2VXDHN65RRMZLSW6MQ
+- 秘密鍵 EF4937A3011F96B40A35B4BC8AD6520A34860F55788BC400599B42CFA8849045
